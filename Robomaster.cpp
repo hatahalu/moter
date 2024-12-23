@@ -1,4 +1,4 @@
-#define MOTOR_ID  1
+#define MOTOR_ID  2
 #define ADJUST_ID  ((MOTOR_ID) >= 5 ? (MOTOR_ID) - 4 : (MOTOR_ID))
 #define HIGH_VALUE (((ADJUST_ID) - 1) * 2)
 #define LOW_VALUE  (HIGH_VALUE + 1)
@@ -22,7 +22,7 @@ void send_motor_command(int16_t current) {
     data[LOW_VALUE] = current & 0xFF; // 下位バイト
     CANMessage msg(MOTOR_CMD_ID, data, 8);
     if (can.write(msg)) {
-        printf("Motor command sent: %d\n", current);
+        printf("Motor command sent: %d  ", current);
     } else {
         printf("Error sending motor command.\n");
     }
@@ -47,11 +47,10 @@ int main() {
     // Main loop
     while (true) {
         CANMessage msg;
-        send_motor_command(500); // 送る電流値
+        send_motor_command(1000); // 送る電流値
         if (can.read(msg)) {
             parse_feedback(msg);
         }
         led = !led; // 動作確認
-        ThisThread::sleep_for(100ms);
     }
 }
