@@ -129,9 +129,6 @@ int main() {
         // モーター6の速度設定
         set_motor_speed(6, 1000);
 
-        // 1ms待機
-        ThisThread::sleep_for(1ms);
-
         // 受信処理
         CANMessage msg;
         if (can.read(msg)) {
